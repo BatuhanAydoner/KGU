@@ -55,7 +55,14 @@ const signin = async (req, res, next) => {
     return next(noUserError);
   }
 
-  res.status(201).json({ message: "Successful" });
+  const jwtInfo = {
+    id: _user.id,
+    email: _user.email,
+  };
+
+  const jwtToken = jwt.sign(jwtInfo, "kgu_jwt_token", { expiresIn: 86400 });
+
+  res.status(201).json({ message: "Successful", token: jwtToken });
 };
 
 module.exports = {

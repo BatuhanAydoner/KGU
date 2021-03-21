@@ -49,13 +49,23 @@ const signin = async (req, res, next) => {
     return next(noUserError);
   }
 
-  const comparedPass = await bcrypt.compare(req.body.password, _user.password);
+  const comparedPass = await bcrypt.compare(
+    req.body.password,
+    _mentor.password
+  );
   if (!comparedPass) {
     const noUserError = new HttpError("Email/password is invalid.");
     return next(noUserError);
   }
 
-  res.status(201).json({ message: "Successful" });
+  const jwtInfo = {
+    id: _mentor.id,
+    email: _mentor.email,
+  };
+
+  const jwtToken = jwt.sign(jwtInfo, "kgu_jwt_token", { expiresIn: 86400 });
+
+  res.status(201).json({ message: "Successful", token: jwtToken });
 };
 
 module.exports = {
