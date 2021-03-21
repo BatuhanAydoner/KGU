@@ -41,7 +41,10 @@ const UserSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    courses: [CoursesSchema],
+    courses: {
+      type: [CoursesSchema],
+      default: [],
+    },
     current_jeton: {
       type: Number,
       default: 0,
