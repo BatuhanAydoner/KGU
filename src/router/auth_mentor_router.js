@@ -15,4 +15,6 @@ router.post(
   authMentorController.signin
 );
 
+router.get("/all-mentors", authMentorController.allMentors);
+
 module.exports = router;

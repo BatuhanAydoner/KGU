@@ -68,7 +68,17 @@ const signin = async (req, res, next) => {
   res.status(201).json({ message: "Successful", token: jwtToken });
 };
 
+const allMentors = async (req, res, next) => {
+  try {
+    const all = await Mentor.find();
+    res.json({ mentors: all });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   signup,
   signin,
+  allMentors,
 };
