@@ -80,8 +80,15 @@ const allMentors = async (req, res, next) => {
   }
 };
 
+const all = (req, res, next) => {
+  res.json({message: 'it is running'});
+}
+
+const 
+
 module.exports = {
   signup,
   signin,
   allMentors,
+  all,
 };
