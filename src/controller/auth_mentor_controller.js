@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const HttpError = require("../error/HttpError");
 const nodemailer = require("nodemailer");
+const User = require("../model/mentor_model");
+const ObjectId = require("mongodb").ObjectId;
 
 const signup = async (req, res, next) => {
   const errorArray = validationResult(req);
@@ -80,8 +82,40 @@ const allMentors = async (req, res, next) => {
   }
 };
 
+const updateMentor = async (req, res, next) => {
+  const mentor_id = ObjectId(req.params.id);
+  let foundedMentor = null;
+
+  const update = { ...req.body };
+
+  try {
+    const _mentor = await Mentor.findById({ _id: mentor_id });
+    if (_mentor) {
+      foundedMentor = _mentor;
+    } else {
+      return next("Mentor could not be founded", 500);
+    }
+  } catch (error) {
+    next(error);
+  }
+
+  try {
+    const mentor = await Mentor.findByIdAndUpdate(
+      { _id: mentor_id },
+      {
+        ...update,
+      }
+    );
+    console.log(mentor);
+    res.status(201).json({ message: "Updated" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   signup,
   signin,
   allMentors,
+  updateMentor,
 };

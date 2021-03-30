@@ -46,6 +46,18 @@ const UserSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    photo_path: {
+      type: String,
+      default: "",
+    },
+    mentor_about: {
+      type: String,
+      default: "",
+    },
+    hour_price: {
+      type: String,
+      default: "",
+    },
   },
   { collection: "Mentors", timestamps: true }
 );
