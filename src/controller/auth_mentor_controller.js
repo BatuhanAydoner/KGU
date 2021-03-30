@@ -6,20 +6,7 @@ const HttpError = require("../error/HttpError");
 const nodemailer = require("nodemailer");
 
 const signup = async (req, res, next) => {
-  const errorArray = validationResult(req);
-
-  if (!errorArray.isEmpty()) {
-    const httpError = new HttpError(
-      "Invalid inputs passed, please check your data.",
-      422
-    );
-    return next(httpError);
-  }
-  try {
-    res.status(404).json({ message: "Successfull" });
-  } catch (error) {
-    next(error);
-  }
+  res.status(404).json({ message: "Successfull" });
 };
 
 const signin = async (req, res, next) => {
