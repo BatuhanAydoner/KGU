@@ -16,26 +16,7 @@ const signup = async (req, res, next) => {
     return next(httpError);
   }
   try {
-    const _mentor = await Mentor.findOne({ email: req.body.email });
-
-    if (_mentor) {
-      const httpError = new HttpError(
-        "Use exists already, please login instead.",
-        500
-      );
-      return next(httpError);
-    }
-
-    const newUser = new Mentor({
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      email: req.body.email,
-      password: await bcrypt.hash(req.body.password, 10),
-    });
-
-    await newUser.save();
-
-    res.status(200).json({ id: newUser.id, email: newUser.email });
+    res.status(404).json({ message: "Successfull" });
   } catch (error) {
     next(error);
   }
