@@ -62,6 +62,8 @@ const signin = async (req, res, next) => {
 
   const jwtInfo = {
     id: _mentor.id,
+    firstname: _mentor.firstname,
+    lastname: _mentor.lastname,
     email: _mentor.email,
   };
 
@@ -72,10 +74,7 @@ const signin = async (req, res, next) => {
 
 const allMentors = async (req, res, next) => {
   try {
-    const all = await Mentor.find(
-      {},
-      { id: 1, firstname: 1, lastname: 1, email: 1 }
-    );
+    const all = await Mentor.find({}, { password: 0 });
     res.json({ mentors: all });
   } catch (error) {
     next(error);

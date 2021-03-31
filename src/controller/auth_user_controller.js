@@ -57,6 +57,8 @@ const signin = async (req, res, next) => {
 
   const jwtInfo = {
     id: _user.id,
+    firstname: _user.firstname,
+    lastname: _user.lastname,
     email: _user.email,
   };
 
