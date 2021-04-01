@@ -112,9 +112,26 @@ const updateMentor = async (req, res, next) => {
   }
 };
 
+const getMentor = async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    const _mentor = await Mentor.findById(id, { password: 0 });
+
+    if (!_mentor) {
+      const noMentorError = new HttpError("Mentor could not be founded", 201);
+      return next(noMentorError);
+    }
+
+    res.status(201).json({ mentor: _mentor });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   signup,
   signin,
   allMentors,
   updateMentor,
+  getMentor,
 };
