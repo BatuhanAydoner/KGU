@@ -15,4 +15,14 @@ router.post(
   authUserController.signin
 );
 
+router.get("/:id", authUserController.getUser);
+
+router.patch("/update/:id", authUserController.updateUser);
+
+router.post(
+  "/add-credit",
+  validationMiddleware.validateAddingCredit(),
+  authUserController.addCredit
+);
+
 module.exports = router;

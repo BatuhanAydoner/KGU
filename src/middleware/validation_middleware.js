@@ -40,7 +40,17 @@ const validateLoginUser = () => {
   ];
 };
 
+const validateAddingCredit = () => {
+  return [
+    body("quantity")
+      .isNumeric()
+      .isInt()
+      .withMessage("Please send number value."),
+  ];
+};
+
 module.exports = {
   validateNewUser,
   validateLoginUser,
+  validateAddingCredit,
 };
