@@ -5,9 +5,12 @@ const CoursesSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Mentor",
   },
+  mentor_name: String,
+  mentor_photo_path: String,
   date: {
-    type: Date,
+    type: String,
   },
+  hour: String,
 });
 
 const UserSchema = new mongoose.Schema(
@@ -46,10 +49,6 @@ const UserSchema = new mongoose.Schema(
       default: [],
     },
     current_jeton: {
-      type: Number,
-      default: 0,
-    },
-    total_jeton: {
       type: Number,
       default: 0,
     },

@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const HttpError = require("../error/HttpError");
 const nodemailer = require("nodemailer");
 const ObjectId = require("mongodb").ObjectId;
+const Mentor = require("../model/mentor_model");
 
 const signup = async (req, res, next) => {
   const errorArray = validationResult(req);
@@ -124,23 +125,70 @@ const addCredit = async (req, res, next) => {
   try {
     const _user = await User.findById(user_id);
 
+    console.log(_user);
+
     if (!_user) {
-      const noUserError = new HttpError("User could not e found", 500);
+      const noUserError = new HttpError("User could not be found", 500);
       return next(noUserError);
     }
 
     let current_jeton = _user.current_jeton;
     current_jeton = current_jeton + quantity;
 
-    let total_jeton = _user.total_jeton;
-    total_jeton = total_jeton + quantity;
-
     await _user.updateOne({
       current_jeton: current_jeton,
-      total_jeton: total_jeton,
     });
 
     res.status(201).json({ message: "Uploaded credit." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const takeCourse = async (req, res, next) => {
+  const userId = req.body.user_id;
+  const mentorId = req.body.mentor_id;
+  const date = req.body.date;
+  const hour = req.body.hour;
+
+  try {
+    const user = await User.findById(userId, { password: 0 });
+    const courses = user.courses;
+
+    const mentor = await Mentor.findById(mentorId, { password: 0 });
+    const mentorCourses = mentor.courses;
+
+    const newCourse = {
+      mentor: mentorId,
+      mentor_name: mentor.firstname + " " + mentor.lastname,
+      mentor_photo_path: mentor.photo_path,
+      date,
+      hour,
+    };
+    courses.push(newCourse);
+
+    const newMentorCourse = {
+      user: userId,
+      user_name: user.firstname + " " + user.lastname,
+      date: date,
+      hour: hour,
+    };
+    mentorCourses.push(newMentorCourse);
+
+    const user_current_credit = user.current_jeton;
+    const user_jeton = user_current_credit - mentor.hour_price;
+
+    const mentor_total_income =
+      mentor.total_income + parseInt(mentor.hour_price);
+
+    await user.updateOne({ courses: [...courses], current_jeton: user_jeton });
+
+    await mentor.updateOne({
+      courses: [...mentorCourses],
+      total_income: mentor_total_income,
+    });
+
+    return res.status(201).json({ message: "Courses is updated" });
   } catch (error) {
     next(error);
   }
@@ -152,4 +200,5 @@ module.exports = {
   getUser,
   updateUser,
   addCredit,
+  takeCourse,
 };

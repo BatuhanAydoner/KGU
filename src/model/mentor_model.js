@@ -5,9 +5,11 @@ const CoursesSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  user_name: String,
   date: {
-    type: Date,
+    type: String,
   },
+  hour: String,
 });
 
 const UserSchema = new mongoose.Schema(
@@ -26,6 +28,7 @@ const UserSchema = new mongoose.Schema(
       minlenght: [1, "Lastname cannot be null or empty."],
       maxlength: [30, "Lastname cannot be bigger than 30 characters."],
     },
+    full_name: String,
     email: {
       type: String,
       trim: true,
@@ -41,6 +44,8 @@ const UserSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    free_days_of_week: [String],
+    free_hours: [String],
     courses: [CoursesSchema],
     total_income: {
       type: Number,

@@ -43,8 +43,8 @@ const validateLoginUser = () => {
 const validateAddingCredit = () => {
   return [
     body("quantity")
-      .isNumeric()
-      .isInt()
+      .trim()
+      .isAlphanumeric()
       .withMessage("Please send number value."),
   ];
 };

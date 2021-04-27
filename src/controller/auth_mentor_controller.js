@@ -33,6 +33,7 @@ const signup = async (req, res, next) => {
       lastname: req.body.lastname,
       email: req.body.email,
       password: await bcrypt.hash(req.body.password, 10),
+      full_name: req.body.firstname + " " + req.body.lastname,
     });
 
     await newUser.save();
@@ -128,10 +129,21 @@ const getMentor = async (req, res, next) => {
   }
 };
 
+const searchMentors = async (req, res, next) => {
+  const searchKey = req.body.key;
+
+  const mentors = await Mentor.find({
+    firstname: { $regex: searchKey },
+  });
+
+  res.status(201).json({ mentors: mentors });
+};
+
 module.exports = {
   signup,
   signin,
   allMentors,
   updateMentor,
   getMentor,
+  searchMentors,
 };

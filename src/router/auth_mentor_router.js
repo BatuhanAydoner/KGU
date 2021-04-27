@@ -21,4 +21,6 @@ router.patch("/update/:id", authMentorController.updateMentor);
 
 router.get("/:id", authMentorController.getMentor);
 
+router.post("/search-mentors", authMentorController.searchMentors);
+
 module.exports = router;

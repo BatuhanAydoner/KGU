@@ -25,4 +25,6 @@ router.post(
   authUserController.addCredit
 );
 
+router.post("/take-course", authUserController.takeCourse);
+
 module.exports = router;
