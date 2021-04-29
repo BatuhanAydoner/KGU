@@ -88,7 +88,7 @@ const updateMentor = async (req, res, next) => {
 
   const update = { ...req.body };
 
-  if (update.password !== undefined) {
+  if (update.password) {
     const hashedPassword = await bcrypt.hash(update.password, 10);
     update.password = hashedPassword;
   }
