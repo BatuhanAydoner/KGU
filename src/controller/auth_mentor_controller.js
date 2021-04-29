@@ -88,6 +88,11 @@ const updateMentor = async (req, res, next) => {
 
   const update = { ...req.body };
 
+  if (update.password !== undefined) {
+    const hashedPassword = await bcrypt.hash(update.password, 10);
+    update.password = hashedPassword;
+  }
+
   try {
     const _mentor = await Mentor.findById({ _id: mentor_id });
     if (_mentor) {
