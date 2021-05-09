@@ -12,6 +12,18 @@ const CoursesSchema = new mongoose.Schema({
   hour: String,
 });
 
+const DateSchema = new mongoose.Schema({
+  date: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  hours: {
+    type: Array,
+    required: true,
+  },
+});
+
 const UserSchema = new mongoose.Schema(
   {
     firstname: {
@@ -44,8 +56,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    free_days_of_week: [String],
-    free_hours: [String],
+    free_dates: [DateSchema],
     courses: [CoursesSchema],
     total_income: {
       type: Number,
