@@ -4,6 +4,7 @@ require("./src/config/database");
 const HttpError = require("./src/error/HttpError");
 const authUserRouter = require("./src/router/auth_user_router");
 const authMentorRouter = require("./src/router/auth_mentor_router");
+const path = require("path");
 
 const app = express();
 
