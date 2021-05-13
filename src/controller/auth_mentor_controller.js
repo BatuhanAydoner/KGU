@@ -85,15 +85,13 @@ const allMentors = async (req, res, next) => {
 const updateMentor = async (req, res, next) => {
   const mentor_id = ObjectId(req.params.id);
   let foundedMentor = null;
-  const profileImage = null;
 
-  const update = { ...req.body };
+  let update = { ...req.body };
 
   if (req.file) {
-    profileImage = req.file.filename;
     update = {
       ...update,
-      photo_path: profileImage,
+      photo_path: req.file.filename,
     };
   }
 
