@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
 mongoose
-  .connect(process.env.MONGODB_CONNECTION_STRING, {
+  .connect(process.env.MONGODB_CONNECTION_STRING_LOCAL, {
     useCreateIndex: true,
     useFindAndModify: false,
     useNewUrlParser: true,

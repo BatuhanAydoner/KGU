@@ -18,7 +18,7 @@ router.post(
 
 router.get("/all-mentors", authMentorController.allMentors);
 
-router.patch(
+router.post(
   "/update/:id",
   multerConfig.single("image"),
   authMentorController.updateMentor

@@ -111,11 +111,18 @@ const updateMentor = async (req, res, next) => {
     next(error);
   }
 
+  let free_dates = foundedMentor.free_dates;
+  if (req.body.new_date) {
+    const newDate = req.body.new_date;
+    free_dates.push(newDate);
+  }
+
   try {
     const mentor = await Mentor.findByIdAndUpdate(
       { _id: mentor_id },
       {
         ...update,
+        free_dates,
       }
     );
     console.log(mentor);
@@ -145,7 +152,7 @@ const searchMentors = async (req, res, next) => {
   const searchKey = req.body.key;
 
   const mentors = await Mentor.find({
-    firstname: { $regex: searchKey },
+    firstname: { $regex: new RegExp(searchKey, "i") },
   });
 
   res.status(201).json({ mentors: mentors });
