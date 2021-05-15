@@ -114,7 +114,17 @@ const updateMentor = async (req, res, next) => {
   let free_dates = foundedMentor.free_dates;
   if (req.body.new_date) {
     const newDate = req.body.new_date;
-    free_dates.push(newDate);
+    if (free_dates.length > 0) {
+      free_dates.map((item) => {
+        if (item.date === newDate.date) {
+          item.hours = [...item.hours, ...newDate.hours];
+        } else {
+          free_dates.push(newDate);
+        }
+      });
+    } else {
+      free_dates.push(newDate);
+    }
   }
 
   try {
