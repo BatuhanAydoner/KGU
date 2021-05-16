@@ -120,7 +120,6 @@ const updateMentor = async (req, res, next) => {
         if (item.date === newDate.date) {
           item.hours = [...item.hours, ...newDate.hours];
           isExistsDate = true;
-          return;
         }
       });
       if (!isExistsDate) {
