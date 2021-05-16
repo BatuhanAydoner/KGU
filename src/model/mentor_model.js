@@ -57,7 +57,10 @@ const UserSchema = new mongoose.Schema(
       trim: true,
     },
     free_dates: [DateSchema],
-    courses: [CoursesSchema],
+    courses: {
+      type: [CoursesSchema],
+      default: [],
+    },
     total_income: {
       type: Number,
       default: 0,
