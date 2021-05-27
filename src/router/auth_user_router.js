@@ -27,4 +27,6 @@ router.post(
 
 router.post("/take-course", authUserController.takeCourse);
 
+router.post("/comment", authUserController.comment);
+
 module.exports = router;
