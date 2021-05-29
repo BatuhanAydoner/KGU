@@ -199,6 +199,40 @@ const takeCourse = async (req, res, next) => {
   }
 };
 
+const comment = async (req, res, next) => {
+  const user_id = req.body.user_id;
+  const mentor_id = req.body.mentor_id;
+  const comment = req.body.comment;
+
+  const user = await User.findById(user_id);
+
+  if (!user) {
+    const noFoundUser = new HttpError("No found user", 404);
+    return next(noFoundUser);
+  }
+
+  const mentor = await Mentor.findById(mentor_id);
+
+  if (!mentor) {
+    const noFoundUser = new HttpError("No found mentor", 404);
+    return next(noFoundUser);
+  }
+
+  const comments = [...mentor.comments];
+
+  const newComment = {
+    user_name: user.firstname + " " + user.lastname,
+    comment: comment,
+  };
+
+  comments.push(newComment);
+
+  await mentor.updateOne({comments: [...comments]});
+
+  return res.status(201).json({message: "Comments are updated"});
+
+}
+
 module.exports = {
   signup,
   signin,
@@ -206,4 +240,5 @@ module.exports = {
   updateUser,
   addCredit,
   takeCourse,
+  comment,
 };

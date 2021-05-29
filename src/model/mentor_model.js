@@ -24,6 +24,19 @@ const DateSchema = new mongoose.Schema({
   },
 });
 
+const CommentSchema = new mongoose.Schema({
+  user_name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  comment: {
+    type: String,
+    required: true,
+    trim: true,
+  }
+});
+
 const UserSchema = new mongoose.Schema(
   {
     firstname: {
@@ -77,6 +90,9 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    comments: {
+      type: [CommentSchema],
+    }
   },
   { collection: "Mentors", timestamps: true }
 );
