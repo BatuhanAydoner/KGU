@@ -8,12 +8,15 @@ const path = require("path");
 const server = require("http");
 const sockecIO = require("socket.io");
 const { v4 } = require("uuid");
+const cors = require("cors");
 
 const app = express();
 
 const serve = server.Server(app);
 const io = sockecIO(serve);
 const port = process.env.PORT;
+
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
