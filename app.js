@@ -5,18 +5,20 @@ const HttpError = require("./src/error/HttpError");
 const authUserRouter = require("./src/router/auth_user_router");
 const authMentorRouter = require("./src/router/auth_mentor_router");
 const path = require("path");
-const server = require("http");
-const sockecIO = require("socket.io");
-const { v4 } = require("uuid");
-const cors = require("cors");
+const http = require("http");
 
 const app = express();
 
-const serve = server.Server(app);
-const io = sockecIO(serve);
-const port = process.env.PORT;
+const server = http.createServer(app);
 
-app.use(cors());
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "https://kguproject.herokuapp.com",
+    methods: ["GET", "POST"],
+  },
+});
+
+const port = process.env.PORT;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -44,32 +46,6 @@ app.use((req, res, next) => {
   next(error);
 });
 
-io.on("connection", (socket) => {
-  console.log("socket established");
-  socket.on("join-room", (userData) => {
-    const { roomID, userID } = userData;
-    socket.join(roomID);
-    socket.to(roomID).broadcast.emit("new-user-connect", userData);
-    socket.on("disconnect", () => {
-      socket.to(roomID).broadcast.emit("user-disconnected", userID);
-    });
-    socket.on("broadcast-message", (message) => {
-      socket
-        .to(roomID)
-        .broadcast.emit("new-broadcast-messsage", { ...message, userData });
-    });
-    // socket.on('reconnect-user', () => {
-    //     socket.to(roomID).broadcast.emit('new-user-connect', userData);
-    // });
-    socket.on("display-media", (value) => {
-      socket.to(roomID).broadcast.emit("display-media", { userID, value });
-    });
-    socket.on("user-video-off", (value) => {
-      socket.to(roomID).broadcast.emit("user-video-off", value);
-    });
-  });
-});
-
 app.use((error, req, res, next) => {
   if (res.headerSent) {
     return next(error);
@@ -79,10 +55,26 @@ app.use((error, req, res, next) => {
     .json({ message: error.message || "An unknown error occured." });
 });
 
-serve
-  .listen(port, () => {
-    console.log(`Listening on the port ${port}`);
-  })
-  .on("error", (e) => {
-    console.error(e);
+io.on("connection", (socket) => {
+  socket.emit("me", socket.id);
+
+  socket.on("disconnect", () => {
+    socket.broadcast.emit("callEnded");
   });
+
+  socket.on("callUser", (data) => {
+    io.to(data.userToCall).emit("callUser", {
+      signal: data.signalData,
+      from: data.from,
+      name: data.name,
+    });
+  });
+
+  socket.on("answerCall", (data) => {
+    io.to(data.to).emit("callAccepted", data.signal);
+  });
+});
+
+server.listen(port, () => {
+  console.log("PORT " + port + " is listening");
+});
