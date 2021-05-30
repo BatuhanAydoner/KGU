@@ -13,7 +13,7 @@ const server = http.createServer(app);
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://kguproject.herokuapp.com",
+    origin: "https://kguproject.herokuapp.com/",
     methods: ["GET", "POST"],
   },
 });
