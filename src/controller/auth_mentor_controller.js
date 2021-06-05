@@ -116,7 +116,7 @@ const updateMentor = async (req, res, next) => {
     const newDate = req.body.new_date;
     let isExistsDate = false;
     if (free_dates.length > 0) {
-      free_dates.forEach(item => {
+      free_dates.forEach((item) => {
         if (item.date === newDate.date) {
           item.hours = [...item.hours, ...newDate.hours];
           isExistsDate = true;

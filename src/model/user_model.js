@@ -52,6 +52,10 @@ const UserSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    call_id: {
+      type: String,
+      default: "",
+    },
   },
   { collection: "Users", timestamps: true }
 );
